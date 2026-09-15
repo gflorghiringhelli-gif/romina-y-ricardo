@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+   <title>Romina & Ricardo · Nuestra Boda</title>
+   
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+   <div id="toast" class="toast">¡Información enviada con éxito! 💌✨</div>
+
+   <!-- CANVAS DE EXPLOSIÓN DE PÉTALOS -->
+   <canvas id="petalsCanvas"></canvas>
+
+   <!-- MÚSICA DE FONDO -->
+   <audio id="musicaInvitacion" preload="auto" loop>
+      <source src="img/musica.mp3" type="audio/mpeg">
+   </audio>
+
+   <div id="music-toggle" class="music-btn" onclick="toggleMusic()">
+       <i class="fa-solid fa-music"></i>
+   </div>
+   
+   <!-- INTRO VIDEO DEL SOBRE -->
+   <div id="contenedor-principal" onclick="activarInvitacion()">
+       <video id="videoSobre" playsinline muted preload="auto" poster="img/sobre.png">
+           <source src="img/1.mp4" type="video/mp4">
+       </video>
+       <div id="capa-boton">
+           <div class="boton-rosa-inicio" id="btn-toca-abrir">TOCÁ EL SELLO PARA ABRIR 💌</div>
+       </div>
+   </div>
+
+   <!-- INVITACIÓN WEB PRO MAX -->
+   <div id="seccion-final" class="oculto">
+
+       <!-- PORTADA EN ARCO CON BORDES DIFUMINADOS -->
+       <header class="hero-portada reveal">
+           <div class="portada-frame-inner">
+               <img src="img/portada.png" alt="Romina y Ricardo" class="portada-img">
+               <div class="portada-overlay">
+                   <h1 class="main-title-portada">Romina <span class="amp-portada">&</span> Ricardo</h1>
+                   <p class="title-sub-portada">NUESTRA BODA</p>
+               </div>
+           </div>
+       </header>
+
+       <div class="bloque-papel-limpio">
+           
+           <!-- MENSAJE DE INVITACIÓN -->
+           <section class="section-pad reveal mt-20">
+               <div class="card-floral-decor text-center">
+                   <p class="invite-quote">
+                       Después de tantos sueños, momentos y caminos compartidos, elegimos seguir escribiendo nuestra historia juntos, para toda la vida. Y no imaginamos este momento sin las personas que queremos y que han sido parte de nuestro camino. Por eso, queremos invitarte a celebrar con nosotros el comienzo de este nuevo capítulo, lleno de amor, ilusión y felicidad.<br><br>Nos hará muy felices compartir este día contigo.
+                   </p>
+               </div>
+           </section>
+
+           <!-- PADRES DE LOS NOVIOS -->
+           <section class="section-pad reveal text-center">
+               <div class="card-floral-decor">
+                   <h3 class="parents-title">CON LA BENDICIÓN DE NUESTROS PADRES</h3>
+                   <div class="parents-grid mt-15">
+                       <div class="parent-col">
+                           <span class="parent-label">PADRES DEL NOVIO</span>
+                           <p class="parent-names">Ramón Coronel<br>& Mercedes Miranda</p>
+                       </div>
+                       <div class="parents-divider"></div>
+                       <div class="parent-col">
+                           <span class="parent-label">PADRES DE LA NOVIA</span>
+                           <p class="parent-names">Carlos Bareiro<br>& Ramona Riveros</p>
+                       </div>
+                   </div>
+               </div>
+           </section>
+
+           <!-- SAVE THE DATE: 3 CÍRCULOS DE RASPADITA + CONTADOR -->
+           <section class="section-pad reveal text-center" id="std-section">
+               <h2 class="editorial-heading mt-10">SAVE THE DATE</h2>
+               <p class="section-sub-label">Raspá cada círculo para descubrir la fecha</p>
+
+               <div class="scratch-circles-wrapper mt-25" id="circlesWrapper">
+                   <div class="circle-scratch-card">
+                       <div class="circle-reveal-content">
+                           <span class="circle-number">14</span>
+                           <span class="circle-label">DÍA</span>
+                       </div>
+                       <canvas class="circle-canvas" data-index="0" data-label="DÍA"></canvas>
+                   </div>
+
+                   <div class="circle-scratch-card">
+                       <div class="circle-reveal-content">
+                           <span class="circle-number">11</span>
+                           <span class="circle-label">MES</span>
+                       </div>
+                       <canvas class="circle-canvas" data-index="1" data-label="MES"></canvas>
+                   </div>
+
+                   <div class="circle-scratch-card">
+                       <div class="circle-reveal-content">
+                           <span class="circle-number">2026</span>
+                           <span class="circle-label">AÑO</span>
+                       </div>
+                       <canvas class="circle-canvas" data-index="2" data-label="AÑO"></canvas>
+                   </div>
+               </div>
+
+               <div class="countdown-card" id="countdownCard">
+                   <p class="countdown-title">FALTAN POCOS DÍAS</p>
+                   <div class="countdown-boxes">
+                       <div class="cd-box"><span id="cd-days">00</span><p>Días</p></div>
+                       <div class="cd-sep">:</div>
+                       <div class="cd-box"><span id="cd-hours">00</span><p>Hs</p></div>
+                       <div class="cd-sep">:</div>
+                       <div class="cd-box"><span id="cd-mins">00</span><p>Min</p></div>
+                       <div class="cd-sep">:</div>
+                       <div class="cd-box"><span id="cd-secs">00</span><p>Seg</p></div>
+                   </div>
+
+                   <div class="mt-20">
+                       <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Boda+Romina+%26+Ricardo&dates=20261114T190000Z/20261115T040000Z&details=¡Te+esperamos+en+nuestra+boda!&location=Salón+de+Eventos+La+Esmeralda,+Fernando+de+la+Mora" target="_blank" class="btn btn-editorial">
+                           <i class="fa-solid fa-calendar-days"></i> AGENDAR EN GOOGLE CALENDAR
+                       </a>
+                   </div>
+               </div>
+           </section>
+
+           <!-- GALERÍA (BLOQUE NUDE) - 10 FOTOS -->
+           <div class="bloque-tono-nuevo">
+               <section class="section-pad reveal text-center">
+                   <h2 class="editorial-heading-light">NUESTROS MOMENTOS</h2>
+                   <p class="title-sub-cursive-light mt-5">Deslizá para ver las fotos</p>
+
+                   <div class="gallery-slider-wrapper mt-20">
+                       <div class="gallery-slider" id="gallerySlider">
+                           <div class="slide-item"><img src="img/foto1.png" alt="Foto 1"></div>
+                           <div class="slide-item"><img src="img/foto2.png" alt="Foto 2"></div>
+                           <div class="slide-item"><img src="img/foto3.png" alt="Foto 3"></div>
+                           <div class="slide-item"><img src="img/foto4.png" alt="Foto 4"></div>
+                           <div class="slide-item"><img src="img/foto5.png" alt="Foto 5"></div>
+                           <div class="slide-item"><img src="img/foto6.png" alt="Foto 6"></div>
+                           <div class="slide-item"><img src="img/foto7.png" alt="Foto 7"></div>
+                           <div class="slide-item"><img src="img/foto8.png" alt="Foto 8"></div>
+                           <div class="slide-item"><img src="img/foto9.png" alt="Foto 9"></div>
+                           <div class="slide-item"><img src="img/foto10.png" alt="Foto 10"></div>
+                       </div>
+                       <div class="slider-hint mt-10">
+                           <i class="fa-solid fa-arrow-left-long"></i> Deslizá <i class="fa-solid fa-arrow-right-long"></i>
+                       </div>
+                   </div>
+               </section>
+           </div>
+
+           <!-- UBICACIONES (CEREMONIA RELIGIOSA A LAS 17:00 HS) -->
+           <section class="section-pad location-section-spacious reveal text-center">
+               <h2 class="editorial-heading">UBICACIONES</h2>
+               <p class="title-sub-cursive">Dónde celebramos</p>
+
+               <div class="venue-card-watercolor mt-25">
+                   <div class="venue-icon-wrap"><i class="fa-solid fa-church"></i></div>
+                   <h3 class="venue-title">CEREMONIA RELIGIOSA</h3>
+                   <p class="venue-time">17:00 HS</p>
+                   <p class="venue-desc">Catedral de San Lorenzo<br>San Lorenzo</p>
+                   <div class="btn-group-center mt-15">
+                       <a href="https://maps.app.goo.gl/bV769AqvBaDt5KNy9?g_st=aw" target="_blank" class="btn btn-outline-dark"><i class="fa-solid fa-location-dot"></i> Google Maps</a>
+                   </div>
+               </div>
+
+               <div class="venue-card-watercolor mt-35">
+                   <div class="venue-icon-wrap"><i class="fa-solid fa-glass-cheers"></i></div>
+                   <h3 class="venue-title">CEREMONIA CIVIL Y RECEPCIÓN</h3>
+                   <p class="venue-time">19:00 HS</p>
+                   <p class="venue-desc">Salón de Eventos La Esmeralda<br>Fernando de la Mora</p>
+                   <div class="btn-group-center mt-15">
+                       <a href="https://maps.app.goo.gl/inpi6HDzKmYQ5RQu5?g_st=aw" target="_blank" class="btn btn-outline-dark"><i class="fa-solid fa-location-dot"></i> Google Maps</a>
+                   </div>
+               </div>
+           </section>
+       </div>
+
+      <!-- CRONOGRAMA (ESTILO TARJETAS CON ICONOS + POLAROID CON FLOR) -->
+       <div class="bloque-papel-limpio">
+           <section class="section-pad reveal text-center cronograma-section-wrap">
+               
+               <!-- FOTO POLAROID CON FLOR DECORATIVA -->
+               <div class="cronograma-polaroid-container">
+                   <img src="img/flor.png" alt="Flor" class="cronograma-flor-decor">
+                   <div class="cronograma-polaroid-frame">
+                       <img src="img/foto5.png" alt="Romina y Ricardo" class="cronograma-polaroid-img">
+                   </div>
+               </div>
+
+               <h2 class="editorial-heading mt-20">CRONOGRAMA</h2>
+               <p class="title-sub-cursive">Momentos de la Boda</p>
+
+               <div class="timeline-cards-wrapper mt-25">
+                   
+                   <div class="timeline-pill-card">
+                       <div class="timeline-icon-circle">
+                           <i class="fa-solid fa-church"></i>
+                       </div>
+                       <div class="timeline-content">
+                           <span class="t-time">17:00 HS</span>
+                           <h4 class="t-title">Ceremonia Religiosa</h4>
+                       </div>
+                   </div>
+
+                   <div class="timeline-pill-card">
+                       <div class="timeline-icon-circle">
+                           <i class="fa-solid fa-file-signature"></i>
+                       </div>
+                       <div class="timeline-content">
+                           <span class="t-time">18:30 HS</span>
+                           <h4 class="t-title">Ceremonia Civil</h4>
+                       </div>
+                   </div>
+
+                   <div class="timeline-pill-card">
+                       <div class="timeline-icon-circle">
+                           <i class="fa-solid fa-music"></i>
+                       </div>
+                       <div class="timeline-content">
+                           <span class="t-time">19:15 HS</span>
+                           <h4 class="t-title">Primer Baile</h4>
+                       </div>
+                   </div>
+
+                   <div class="timeline-pill-card">
+                       <div class="timeline-icon-circle">
+                           <i class="fa-solid fa-utensils"></i>
+                       </div>
+                       <div class="timeline-content">
+                           <span class="t-time">20:20 HS</span>
+                           <h4 class="t-title">Cena Buffet</h4>
+                       </div>
+                   </div>
+
+                   <div class="timeline-pill-card">
+                       <div class="timeline-icon-circle">
+                           <i class="fa-solid fa-champagne-glasses"></i>
+                       </div>
+                       <div class="timeline-content">
+                           <span class="t-time">21:30 HS</span>
+                           <h4 class="t-title">Brindis</h4>
+                       </div>
+                   </div>
+
+                   <div class="timeline-pill-card">
+                       <div class="timeline-icon-circle">
+                           <i class="fa-solid fa-glass-cheers"></i>
+                       </div>
+                       <div class="timeline-content">
+                           <span class="t-time">22:00 HS</span>
+                           <h4 class="t-title">Inicio de la Fiesta</h4>
+                       </div>
+                   </div>
+
+                   <div class="timeline-pill-card">
+                       <div class="timeline-icon-circle">
+                           <i class="fa-solid fa-star"></i>
+                       </div>
+                       <div class="timeline-content">
+                           <span class="t-time">01:00 HS</span>
+                           <h4 class="t-title">Fin de la Fiesta</h4>
+                       </div>
+                   </div>
+
+               </div>
+           </section>
+       </div>
+
+       <!-- DRESS CODE (CON VESTUARIO.PNG) -->
+       <div class="bloque-papel-limpio">
+           <section class="section-pad reveal text-center">
+               <div class="dress-img-head mt-10">
+                   <img src="img/vestuario.png" alt="Dress Code" class="dress-custom-icon">
+               </div>
+               <h2 class="editorial-heading mt-10">DRESS CODE</h2>
+               <p class="title-sub-cursive">Código de Vestimenta</p>
+
+               <p class="dress-code-subtitle">ELEGANTE</p>
+
+               <div class="notice-box-gold mt-15">
+                   <p>Tonalidades: Evitar colores <strong>blanco, gris y beige claro</strong>.</p>
+               </div>
+           </section>
+
+           <!-- DETALLES (BLOQUE NUDE) -->
+           <div class="bloque-tono-nuevo mt-20">
+               <section class="section-pad reveal text-center">
+                   <h2 class="editorial-heading-light">DETALLES DE LA BODA</h2>
+                   <p class="title-sub-cursive-light">Para tener en cuenta</p>
+
+                   <div class="details-grid mt-20">
+                       <div class="detail-item">
+                           <i class="fa-regular fa-clock detail-icon"></i>
+                           <h4>LLEGAR PUNTUAL</h4>
+                           <p>Les pedimos puntualidad para compartir juntos cada segundo desde la ceremonia.</p>
+                       </div>
+                       <div class="detail-item">
+                           <i class="fa-solid fa-champagne-glasses detail-icon"></i>
+                           <h4>NOCHE EXCLUSIVA PARA ADULTOS</h4>
+                           <p>Queremos que los papás disfruten de una noche especial y relajada, por lo que el evento es exclusivamente para adultos.</p>
+                       </div>
+                   </div>
+               </section>
+           </div>
+
+           <!-- SUGERENCIA DE REGALO -->
+           <section class="section-pad reveal text-center mt-25">
+               <div class="card-floral-decor">
+                   <div class="envelope-seal-wrap">
+                       <i class="fa-solid fa-gift"></i>
+                   </div>
+                   
+                   <h2 class="editorial-heading mt-15">SUGERENCIA DE REGALO</h2>
+                   <p class="title-sub-cursive">Lista de bodas</p>
+                   <p class="gift-text">
+                       Tu presencia es nuestro mejor regalo. Si deseas tener un detalle con nosotros, puedes ver nuestra lista de regalos en Tupi.
+                   </p>
+                   <div class="mt-20">
+                       <a href="https://www.tupi.com.py/regalos_en_lista/9810/Boda-de-ROMINA-BAREIRO-y-RICARDO-CORONEL--el-14-11-2026" target="_blank" class="btn btn-editorial">
+                           <i class="fa-solid fa-gift"></i> VER LISTA EN TUPI
+                       </a>
+                   </div>
+               </div>
+           </section>
+       </div>
+
+      <!-- MÚSICA & PLAYLIST (CONTENEDOR BLANCO SÓLIDO SOBRE FONDO NUDE) -->
+       <div class="bloque-tono-nuevo">
+           <section class="section-pad reveal text-center">
+               <div class="card-floral-decor">
+                   <div class="feature-icon-wrap spotify-bg"><i class="fa-brands fa-spotify"></i></div>
+                   <h2 class="editorial-heading">MÚSICA & PLAYLIST</h2>
+                   <p class="title-sub-cursive">¿Qué canción no puede faltar?</p>
+                   <p class="feature-text">
+                       Queremos que la pista explote. ¡Sugerinos los temas que querés bailar!
+                   </p>
+
+                   <form id="formCancion" class="custom-form mt-20" onsubmit="enviarCancion(event)">
+                       <div class="form-group">
+                           <input type="text" id="cancionInput" placeholder="Nombre de la canción y artista..." required>
+                       </div>
+                       <button type="submit" class="btn-custom-submit mt-15">
+                           <i class="fa-solid fa-paper-plane"></i> RECOMENDAR CANCIÓN
+                       </button>
+                   </form>
+               </div>
+           </section>
+       </div>
+
+       <!-- MURO DE DESEOS (VUELVE AL FONDO DE PAPEL LIMPIO Y TARJETA BLANCA) -->
+       <div class="bloque-papel-limpio">
+           <section class="section-pad reveal text-center">
+               <div class="card-floral-decor">
+                   <div class="feature-icon-wrap"><i class="fa-solid fa-heart"></i></div>
+                   <h2 class="editorial-heading">MURO DE DESEOS</h2>
+                   <p class="title-sub-cursive">Déjalo tu mensaje a los novios</p>
+                   <p class="feature-text">
+                       Tus palabras serán guardadas en nuestro libro de recuerdos inolvidables.
+                   </p>
+
+                   <form id="formDeseo" class="custom-form mt-20" onsubmit="enviarDeseo(event)">
+                       <div class="form-group">
+                           <input type="text" id="nombreInput" placeholder="Nombre y Apellido *" required>
+                       </div>
+                       <div class="form-group mt-12">
+                           <textarea id="mensajeInput" rows="3" placeholder="Escribí tus buenos deseos para Romina & Ricardo..." required></textarea>
+                       </div>
+                       <button type="submit" class="btn-custom-submit mt-15">
+                           <i class="fa-solid fa-heart"></i> ENVIAR MI DESEO
+                       </button>
+                   </form>
+               </div>
+           </section>
+       </div>
+
+       <!-- RSVP (BLOQUE NUDE) -->
+       <div class="bloque-tono-nuevo">
+           <section class="section-pad reveal text-center">
+               <h2 class="editorial-heading-light">RSVP</h2>
+               <p class="title-sub-cursive-light">Esperamos contar con vos</p>
+               
+               <p class="rsvp-deadline-light mt-15">Por favor confirmar asistencia antes del <strong>10 de Octubre de 2026</strong></p>
+
+               <div class="btn-group-rsvp mt-25">
+                   <a href="https://wa.me/595983517836?text=%C2%A1Hola%21%20Confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Romina%20%26%20Ricardo%20%F0%9F%A4%8D%20Nombre%20y%20Apellido%3A" class="btn btn-white-pill" target="_blank">
+                       <i class="fa-brands fa-whatsapp"></i> CONFIRMAR CON ROMINA
+                   </a>
+                   <a href="https://wa.me/595981860537?text=%C2%A1Hola%21%20Confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Romina%20%26%20Ricardo%20%F0%9F%A4%8D%20Nombre%20y%20Apellido%3A" class="btn btn-white-pill mt-10" target="_blank">
+                       <i class="fa-brands fa-whatsapp"></i> CONFIRMAR CON RICARDO
+                   </a>
+               </div>
+           </section>
+       </div>
+
+       <!-- CIERRE -->
+       <div class="bloque-papel-limpio">
+           <section class="section-pad reveal text-center" style="padding-top: 50px; padding-bottom: 50px;">
+               <div class="closing-gold-divider-top"></div>
+               <p class="closing-final-msg mt-25">Te esperamos para celebrar juntos el amor. La alegría y el comienzo de este nuevo capítulo de nuestra historia ❤️</p>
+               <h2 class="closing-gold-couple-names mt-25">Romina & Ricardo</h2>
+               <div class="closing-date-nums mt-15">14 . 11 . 2026</div>
+               <div class="closing-gold-divider-bottom mt-20"></div>
+           </section>
+
+           <footer class="editorial-footer">
+               <p>GHISA DIGITAL · INVITACIONES DIGITALES</p>
+           </footer>
+       </div>
+
+   </div>
+
+   <script src="script.js"></script>
+</body>
+</html>
