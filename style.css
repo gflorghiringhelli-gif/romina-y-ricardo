@@ -627,3 +627,11 @@ body {
     line-height: 1.5;
     padding: 0 10px;
 }
+
+.t-subtitle {
+    font-family: var(--font-seasons);
+    font-size: 0.8rem;
+    font-style: italic;
+    color: #e2c27b;
+    margin-top: 1px;
+}
